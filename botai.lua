@@ -1,12 +1,3 @@
---[[
-🤖 Smart Robot Assistant Pro+ (FINAL MAXIMUS SEMANTIC)
-Tác giả: Gemini (Final Version)
-Nâng cấp đặc biệt:
-- Bộ từ đồng nghĩa được mở rộng tuyệt đối. Mỗi nhóm được bổ sung thêm các cách diễn đạt gián tiếp, tiếng lóng, và từ đồng nghĩa ít phổ biến.
-- Khả năng nhận diện ngữ nghĩa CỰC CAO.
-- Giữ nguyên các nhóm ngữ nghĩa thông minh và cơ chế Censor.
---]]
-
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
@@ -15,65 +6,132 @@ local LocalPlayer = Players.LocalPlayer
 -- GUI chính
 local ScreenGui = Instance.new("ScreenGui", LocalPlayer:WaitForChild("PlayerGui"))
 ScreenGui.Name = "SmartBotUI"
+ScreenGui.ResetOnSpawn = false
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 local Frame = Instance.new("Frame", ScreenGui)
-Frame.Size = UDim2.new(0, 320, 0, 280)
-Frame.Position = UDim2.new(0.67, 0, 0.5, -140)
-Frame.BackgroundColor3 = Color3.fromRGB(15, 15, 30) -- Màu Nền Tối
-Frame.BackgroundTransparency = 0.0
+Frame.Size = UDim2.new(0, 300, 0, 260) -- rộng hơn frame
+Frame.Position = UDim2.new(0.65, 0, 0.5, -130)
+Frame.BackgroundColor3 = Color3.fromRGB(15, 15, 30)
 Frame.BorderSizePixel = 0
 Frame.Active = true
 Frame.Draggable = true
-Instance.new("UICorner", Frame).CornerRadius = UDim.new(0, 14)
+Instance.new("UICorner", Frame).CornerRadius = UDim.new(0, 20)
 
+-- Title với neon glow
 local Title = Instance.new("TextLabel", Frame)
-Title.Text = "👑 Smart Robot FINAL MAXIMUS"
-Title.Size = UDim2.new(1, 0, 0, 30)
+Title.Text = "👑 Smart Bot ULTRA"
+Title.Size = UDim2.new(1, 0, 0, 40)
+Title.BackgroundColor3 = Color3.fromRGB(60, 0, 120)
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-Title.BackgroundColor3 = Color3.fromRGB(60, 20, 90) -- Màu Tím Thâm cho sự Tối Thượng
 Title.Font = Enum.Font.GothamBold
-Title.TextSize = 17
-Instance.new("UICorner", Title).CornerRadius = UDim.new(0, 14)
+Title.TextSize = 18
+Instance.new("UICorner", Title).CornerRadius = UDim.new(0, 20)
 
+local TitleStroke = Instance.new("UIStroke", Title)
+TitleStroke.Color = Color3.fromRGB(0, 255, 255)
+TitleStroke.Thickness = 2
+TitleStroke.Transparency = 0.3
+
+-- Nút Flash/Pro ngay dưới Title, căn giữa, rộng hơn, đẹp hơn
+local ModeButton = Instance.new("TextButton", Frame)
+ModeButton.Size = UDim2.new(0, 220, 0, 50) -- rộng hơn
+ModeButton.Position = UDim2.new(0.5, -110, 0, 48)
+ModeButton.BackgroundColor3 = Color3.fromRGB(50, 0, 120)
+ModeButton.TextColor3 = Color3.fromRGB(0, 255, 255)
+ModeButton.Font = Enum.Font.GothamBold
+ModeButton.TextSize = 15
+ModeButton.Text = "Mode: PRO | Ping: 0ms | FPS: 0"
+Instance.new("UICorner", ModeButton).CornerRadius = UDim.new(0, 18)
+local Mode = "PRO"
+
+-- Hover animation nút Mode đẹp hơn
+ModeButton.MouseEnter:Connect(function()
+    TweenService:Create(ModeButton, TweenInfo.new(0.25, Enum.EasingStyle.Quad), {BackgroundColor3 = Color3.fromRGB(70, 0, 180)}):Play()
+end)
+ModeButton.MouseLeave:Connect(function()
+    TweenService:Create(ModeButton, TweenInfo.new(0.25, Enum.EasingStyle.Quad), {BackgroundColor3 = Color3.fromRGB(50, 0, 120)}):Play()
+end)
+
+-- ChatLabel animation gõ chữ
 local ChatLabel = Instance.new("TextLabel", Frame)
-ChatLabel.Size = UDim2.new(1, -20, 0, 180)
-ChatLabel.Position = UDim2.new(0, 10, 0, 40)
+ChatLabel.Size = UDim2.new(1, -20, 0, 150)
+ChatLabel.Position = UDim2.new(0, 10, 0, 92)
 ChatLabel.BackgroundTransparency = 1
 ChatLabel.TextWrapped = true
-ChatLabel.TextColor3 = Color3.fromRGB(100, 255, 255) -- Xanh Neon
+ChatLabel.TextColor3 = Color3.fromRGB(0, 255, 255)
 ChatLabel.Font = Enum.Font.Gotham
 ChatLabel.TextSize = 15
-ChatLabel.Text = "🤖 Bắt đầu phiên bản tối thượng! Thử thách toàn bộ kiến thức của mình!"
+ChatLabel.Text = ""
 
-local Info = Instance.new("TextLabel", Frame)
-Info.Size = UDim2.new(1, -20, 0, 20)
-Info.Position = UDim2.new(0, 10, 0, 225)
-Info.BackgroundTransparency = 1
-Info.TextColor3 = Color3.fromRGB(255, 150, 100) -- Cam nhạt cho Info
-Info.Font = Enum.Font.Gotham
-Info.TextSize = 14
+local fullText = "🤖 Phiên bản Mobile cực đẹp PRO/FLASH! Nhỏ gọn, neon sống động."
+local textIndex = 0
 
+spawn(function()
+    while true do
+        if textIndex < #fullText then
+            textIndex = textIndex + 1
+            ChatLabel.Text = string.sub(fullText,1,textIndex)
+            wait(0.03)
+        else
+            wait(2)
+            textIndex = 0
+            ChatLabel.Text = ""
+        end
+    end
+end)
+
+-- ChatBox
 local ChatBox = Instance.new("TextBox", Frame)
 ChatBox.PlaceholderText = "Nhập tin nhắn..."
-ChatBox.Size = UDim2.new(1, -20, 0, 32)
-ChatBox.Position = UDim2.new(0, 10, 0, 240)
-ChatBox.BackgroundColor3 = Color3.fromRGB(30, 30, 50)
+ChatBox.Size = UDim2.new(1, -20, 0, 36) -- cao hơn 1 chút
+ChatBox.Position = UDim2.new(0, 10, 0, 200)
+ChatBox.BackgroundColor3 = Color3.fromRGB(30, 30, 55)
 ChatBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 ChatBox.ClearTextOnFocus = false
 ChatBox.Font = Enum.Font.Gotham
 ChatBox.TextSize = 15
-Instance.new("UICorner", ChatBox).CornerRadius = UDim.new(0, 10)
+Instance.new("UICorner", ChatBox).CornerRadius = UDim.new(0, 19)
 
-------------------------------------------------
--- FPS + Ping hiển thị
-------------------------------------------------
-local fps, last = 0, tick()
+-- Hover animation ChatBox
+ChatBox.MouseEnter:Connect(function()
+    TweenService:Create(ChatBox, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {BackgroundColor3 = Color3.fromRGB(50, 50, 80)}):Play()
+end)
+ChatBox.MouseLeave:Connect(function()
+    TweenService:Create(ChatBox, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {BackgroundColor3 = Color3.fromRGB(30, 30, 55)}):Play()
+end)
+
+-- Flash mode animation neon nhấp nháy
+local function FlashNeon()
+    while Mode == "FLASH" do
+        TweenService:Create(ChatLabel, TweenInfo.new(0.5), {TextColor3 = Color3.fromRGB(255, 255, 0)}):Play()
+        wait(0.5)
+        TweenService:Create(ChatLabel, TweenInfo.new(0.5), {TextColor3 = Color3.fromRGB(0, 255, 255)}):Play()
+        wait(0.5)
+    end
+end
+
+-- Click đổi chế độ
+ModeButton.MouseButton1Click:Connect(function()
+    if Mode == "PRO" then
+        Mode = "FLASH"
+        ModeButton.Text = "Mode: FLASH | Ping: 0ms | FPS: 0"
+        spawn(FlashNeon)
+    else
+        Mode = "PRO"
+        ModeButton.Text = "Mode: PRO | Ping: 0ms | FPS: 0"
+        ChatLabel.TextColor3 = Color3.fromRGB(0, 255, 255)
+    end
+end)
+
+-- FPS + Ping chính xác hiển thị trực tiếp trên ModeButton
+local fps, lastTick = 0, tick()
 RunService.RenderStepped:Connect(function()
-	fps = math.floor(1 / (tick() - last))
-	last = tick()
-	local ping = math.random(30, 95)
-	Info.Text = string.format("Ping: %dms | FPS: %d", ping, fps)
+    local now = tick()
+    fps = 1 / (now - lastTick)
+    lastTick = now
+    local ping = math.floor(LocalPlayer:GetNetworkPing() * 1000)
+    ModeButton.Text = string.format("Mode: %s | Ping: %dms | FPS: %d", Mode, ping, math.floor(fps))
 end)
 
 ------------------------------------------------
@@ -272,3 +330,4 @@ task.spawn(function()
 		typeText(ChatLabel, actions[math.random(1,#actions)])
 	end
 end)
+
