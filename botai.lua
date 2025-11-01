@@ -53,18 +53,7 @@ ModeButton.MouseLeave:Connect(function()
     TweenService:Create(ModeButton, TweenInfo.new(0.25, Enum.EasingStyle.Quad), {BackgroundColor3 = Color3.fromRGB(50, 0, 120)}):Play()
 end)
 
--- ChatLabel animation gõ chữ
-local ChatLabel = Instance.new("TextLabel", Frame)
-ChatLabel.Size = UDim2.new(1, -20, 0, 150)
-ChatLabel.Position = UDim2.new(0, 10, 0, 92)
-ChatLabel.BackgroundTransparency = 1
-ChatLabel.TextWrapped = true
-ChatLabel.TextColor3 = Color3.fromRGB(0, 255, 255)
-ChatLabel.Font = Enum.Font.Gotham
-ChatLabel.TextSize = 15
-ChatLabel.Text = ""
-
-local fullText = "🤖 Phiên bản Mobile cực đẹp PRO/FLASH! Nhỏ gọn, neon sống động."
+local fullText = "CHAT BOT"
 local textIndex = 0
 
 spawn(function()
@@ -330,4 +319,5 @@ task.spawn(function()
 		typeText(ChatLabel, actions[math.random(1,#actions)])
 	end
 end)
+
 
